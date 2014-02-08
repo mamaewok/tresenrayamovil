@@ -21,7 +21,8 @@ public class PortadaActivity extends Activity {
 	                finally{
 	                    onPause();
 	                    startActivity(new Intent(
-	                    		"com.example.calculadoramovil.CalculadoraActivity"));
+	                    		"com.example.tresenrayamovil.TresEnRayaActivity"));
+	                    System.out.println("Hago el intent");
 	                }
 	            }
 	        };

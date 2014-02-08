@@ -3,6 +3,7 @@ package com.example.tresenrayamovil;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -49,7 +50,7 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tresenraya_activity);
+		setContentView(R.layout.paneldejuego_activity);
 		
 		panelJuego = new BotonJuego[3][3];
 		posibilidades = new ArrayList<BotonJuego>();
@@ -58,6 +59,11 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 		bloqueado = false;
 		
 		mensaje = (TextView)findViewById(R.id.textView1);
+		reiniciar = (Button)findViewById(R.id.BtnReinicio);
+		atras = (Button)findViewById(R.id.BtnAtras);
+		
+		reiniciar.setOnClickListener(this);
+		atras.setOnClickListener(this);
 		
 		btn1 = (BotonJuego)findViewById(R.id.Btn1_1);
 		btn2 = (BotonJuego)findViewById(R.id.Btn1_2);
@@ -68,10 +74,6 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 		btn7 = (BotonJuego)findViewById(R.id.Btn3_1);
 		btn8 = (BotonJuego)findViewById(R.id.Btn3_2);
 		btn9 = (BotonJuego)findViewById(R.id.Btn3_3);
-		
-		//to do
-//		reiniciar = (Button)findViewById(R.id.BtnReinicio);
-//		atras = (Button)findViewById(R.id.BtnAtras);
 		
 		btn1.setXY(0, 0);
 		btn2.setXY(1, 0); 
@@ -329,7 +331,7 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 				reiniciar();
 			}
 			if (tipoJuego == true && !bloqueado) {							//Si se juega HvsO quito la posibilidad del boton pulsado por el H y lo convierto
-				posibilidades.remove(botonJuego);							//en boton pulsado por el Ordenador y borro la posilidad el botón del ordenador, pone el simbolo
+				posibilidades.remove(botonJuego);							//en boton pulsado por el Ordenador y borro la posilidad del botón del ordenador, pone el simbolo
 				botonJuego = calcularMovimiento();							//y suma movimiento
 				posibilidades.remove(botonJuego);
 				ponerSimbolo(botonJuego);
@@ -344,15 +346,14 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 			}
 		}
 		Button boton = (Button)findViewById(v.getId());
-		TresEnRaya ter = new TresEnRaya();
 		if(boton.getText().equals("Reiniciar")){
 			mensaje.setText("");
 			reiniciar();
 		}
-		if(btn.getText().equals("Atrás")){
-			bloquear();
-			bloquearAceptar();
-			bloquearTipoJuego();
+		if(boton.getText().equals("Atrás")){
+			finish();
+			startActivity(new Intent(
+            		"com.example.tresenrayamovil.TresEnRayaActivity"));
 		}
 	}
 
