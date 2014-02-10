@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -128,9 +129,11 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 	 */
 	private void ponerSimbolo(BotonJuego botonJuego) {
 		if (turno == true) {
+			botonJuego.setTextColor(Color.YELLOW);
 			botonJuego.setText(JUGADOR1);
 			turno = false;
 		} else {
+			botonJuego.setTextColor(Color.BLUE);
 			botonJuego.setText(JUGADOR2);
 			turno = true;
 		}

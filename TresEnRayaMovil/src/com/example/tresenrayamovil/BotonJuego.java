@@ -1,7 +1,6 @@
 package com.example.tresenrayamovil;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.Button;
 
@@ -23,9 +22,7 @@ public class BotonJuego extends Button {
 	 */
 	public BotonJuego(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		this.setTextColor(Color.DKGRAY);
-		this.setEnabled(true);
-	
+		this.setEnabled(true);	
 	}
 	// returns las coordenadas
 	public int getCoordenadaY() {
