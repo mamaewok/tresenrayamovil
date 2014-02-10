@@ -20,16 +20,6 @@
         android:text="@string/titulo"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FF8000" />
-
-    <Button
-        android:id="@+id/buttonJugar"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="95dp"
-        android:text="@string/comenzar" />
-
     <RadioGroup
         android:id="@+id/grupo"
         android:layout_width="wrap_content"
@@ -53,5 +43,33 @@
             android:text="@string/tipoJuego_2"
             android:textColor="#A5DF00" />
     </RadioGroup>
+    
+    <Button
+        android:id="@+id/buttonJugar"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="95dp"
+        android:text="@string/comenzar" />
+
+    <Button
+        android:id="@+id/buttonSalir"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/grupo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp"
+        android:text="@string/salir" />
+
+    <ImageView
+        android:contentDescription="@string/logo"
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/grupo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp"
+        android:src="@drawable/logo" />
 
 </RelativeLayout>

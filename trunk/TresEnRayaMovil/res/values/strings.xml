@@ -6,6 +6,8 @@
     <string name="tipoJuego_1">Humano vs Ordenador</string>
     <string name="tipoJuego_2">Humano vs Humano</string>
     <string name="comenzar">Jugar</string>
+    <string name="salir">Salir</string>
+    <string name="logo">Logo del juego</string>
     <string name="reinicio">Reiniciar</string>
     <string name="atras">Atrás</string>
     <string name="titulo">Tres en Raya</string>
