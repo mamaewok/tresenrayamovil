@@ -5,15 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RadioButton;
 
 public class TresEnRayaActivity extends Activity implements View.OnClickListener {
 
-	RadioButton rb1;
-	RadioButton rb2;
-	Button jugar;
-
+	private RadioButton rb1;
+	private RadioButton rb2;
+	private Button jugar, salir;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -21,12 +22,18 @@ public class TresEnRayaActivity extends Activity implements View.OnClickListener
 
 		rb1 = (RadioButton) findViewById(R.id.radioButton1);
 		rb2 = (RadioButton) findViewById(R.id.radioButton2);
-		System.out.println("Creo radio button");
 		jugar = (Button) findViewById(R.id.buttonJugar);
-		System.out.println("Creo boton jugar");
 		jugar.setOnClickListener(this);
-		System.out.println("Añado listener");
-
+		salir = (Button) findViewById(R.id.buttonSalir);
+		salir.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_MAIN);
+				intent.addCategory(Intent.CATEGORY_HOME);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override
@@ -35,21 +42,24 @@ public class TresEnRayaActivity extends Activity implements View.OnClickListener
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		finish();
+	}
 
 	@Override
 	public void onClick(View view) {
-		PanelJuegoActivity p = new PanelJuegoActivity();
 		if (rb1.isChecked() == true) {
-			p.setTipoJuego(true);
-			startActivity(new Intent(
-					"com.example.tresenrayamovil.PanelJuegoActivity"));
+			Intent intent = new Intent("com.example.tresenrayamovil.PanelJuegoActivity");
+			intent.putExtra("tipoJuego", true);
+			startActivity(intent);
 		} else if (rb2.isChecked() == true) {
-			p.setTipoJuego(true);
-			startActivity(new Intent(
-					"com.example.tresenrayamovil.PanelJuegoActivity"));
+			Intent intent = new Intent("com.example.tresenrayamovil.PanelJuegoActivity");
+			intent.putExtra("tipoJuego", false);
+			startActivity(intent);
 		}
-	}
-
-	// TODO Auto-generated method stub
+	} 
 
 }

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,9 +20,7 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 	// Constantes
 	public static final String JUGADOR1 = "X";
 	public static final String JUGADOR2 = "O";
-//	public static final ImageButton JUGADOR1_ICON = new ImageButton(context);
-//	public static final ImageButton JUGADOR2_ICON = new ImageButton(context);
-	
+
 	// Declaro mis atributos
 	
 	// matriz que rellenaremos con las teclas de tipo BotonJuego
@@ -57,13 +56,26 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 		movimientos = 0;
 		turno = true;
 		bloqueado = false;
-		
+		tipoJuego = getIntent().getExtras().getBoolean("tipoJuego");
 		mensaje = (TextView)findViewById(R.id.textView1);
 		reiniciar = (Button)findViewById(R.id.BtnReinicio);
 		atras = (Button)findViewById(R.id.BtnAtras);
 		
-		reiniciar.setOnClickListener(this);
-		atras.setOnClickListener(this);
+		reiniciar.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				mensaje.setText("");
+				reiniciar();
+			}
+		});
+		
+		atras.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(
+	            		"com.example.tresenrayamovil.TresEnRayaActivity"));	
+			}
+		});
 		
 		btn1 = (BotonJuego)findViewById(R.id.Btn1_1);
 		btn2 = (BotonJuego)findViewById(R.id.Btn1_2);
@@ -76,13 +88,13 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 		btn9 = (BotonJuego)findViewById(R.id.Btn3_3);
 		
 		btn1.setXY(0, 0);
-		btn2.setXY(1, 0); 
-		btn3.setXY(2, 0);
-		btn4.setXY(0, 1);
+		btn2.setXY(0, 1); 
+		btn3.setXY(0, 2);
+		btn4.setXY(1, 0);
 		btn5.setXY(1, 1);
-		btn6.setXY(2, 1);
-		btn7.setXY(0, 2);
-		btn8.setXY(1, 2);
+		btn6.setXY(1, 2);
+		btn7.setXY(2, 0);
+		btn8.setXY(2, 1);
 		btn9.setXY(2, 2);
 		
 		panelJuego[0][0] = btn1;
@@ -95,27 +107,19 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 		panelJuego[1][2] = btn8;
 		panelJuego[2][2] = btn9;
 		
-		bloquear();
-		
 		for (int x = 0; x < panelJuego.length; x++) {
 			for (int y = 0; y < panelJuego[x].length; y++) {
 				panelJuego[x][y].setOnClickListener(this);
 				posibilidades.add(panelJuego[x][y]);
 			}
 		}
+		ponerTurno();
+		desbloquear();
 	}
 
 		
 
 	// Métodos.
-	/**
-	 * Establece true para Humano vs Ordenador o false para Humano vs Humano
-	 * 
-	 * @param tipoJuego
-	 */
-	public void setTipoJuego(boolean tipoJuego) {
-		this.tipoJuego = tipoJuego;
-	}
 
 	/**
 	 * Establece el símbolo según si el turno esta en true(X) o false(O)
@@ -125,17 +129,19 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 	private void ponerSimbolo(BotonJuego botonJuego) {
 		if (turno == true) {
 			botonJuego.setText(JUGADOR1);
-			if (tipoJuego == false)
-				mensaje.setText("Turno de JUGADOR 1");
-			// botonJuego.setIcon(JUGADOR1_ICON); --> Debería establecer el
-			// icono como imagen pero no lo hace :(
 			turno = false;
 		} else {
 			botonJuego.setText(JUGADOR2);
-			if (tipoJuego == false)
-				mensaje.setText("Turno de JUGADOR 2");
-			// botonJuego.setIcon(JUGADOR2_ICON);
 			turno = true;
+		}
+	}
+	
+	private void ponerTurno(){
+		if (tipoJuego == false){
+			if (turno == true)
+				mensaje.setText("Turno de JUGADOR 1");
+			else
+				mensaje.setText("Turno de JUGADOR 2");
 		}
 	}
 
@@ -152,7 +158,8 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 			}
 		}
 		movimientos = 0;
-		bloquear();
+		ponerTurno();
+		desbloquear();
 	}
 
 	/**
@@ -314,21 +321,28 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 		return false;
 	}
 
+	@Override
+	public void onPause(){
+		super.onPause();
+		finish();
+	}
+	
 	/**
 	 * Gestiona el evento de pulsado de los botones del tablero de juego
 	 */
 	@Override
 	public void onClick(View v) {
 		BotonJuego botonJuego = (BotonJuego)findViewById(v.getId());
-		if (botonJuego.getText().equals("")) {  
-			ponerSimbolo(botonJuego);					//Si el boton esta vacio pon el simbolo correspondiente y suma el movimiento
+		if (botonJuego.getText().equals("")) {			//Si el boton esta vacio pon el simbolo correspondiente y suma el movimiento
+			ponerSimbolo(botonJuego);
+			ponerTurno();
 			movimientos++;
 			if (comprobarGanador(botonJuego) == true) {
 				mensaje.setText("GANADOR: " + botonJuego.getText());		//Si ese boton gana dilo y reinicia
-				reiniciar();
+				bloquear();
 			} else if (movimientos == 9) {									//Si los mov = 9 hay empate y reinicia
 				mensaje.setText("EMPATE");
-				reiniciar();
+				bloquear();
 			}
 			if (tipoJuego == true && !bloqueado) {							//Si se juega HvsO quito la posibilidad del boton pulsado por el H y lo convierto
 				posibilidades.remove(botonJuego);							//en boton pulsado por el Ordenador y borro la posilidad del botón del ordenador, pone el simbolo
@@ -338,23 +352,14 @@ public class PanelJuegoActivity extends Activity implements View.OnClickListener
 				movimientos++;
 				if (comprobarGanador(botonJuego) == true) {								//Comprueba ganador o empate HvsO
 					mensaje.setText("GANADOR: " + botonJuego.getText());
-					reiniciar();
+					bloquear();
 				} else if (movimientos == 9) {
 					mensaje.setText("Final de juego. Tablas.");
-					reiniciar();
+					bloquear();
 				}
 			}
 		}
-		Button boton = (Button)findViewById(v.getId());
-		if(boton.getText().equals("Reiniciar")){
-			mensaje.setText("");
-			reiniciar();
-		}
-		if(boton.getText().equals("Atrás")){
-			finish();
-			startActivity(new Intent(
-            		"com.example.tresenrayamovil.TresEnRayaActivity"));
-		}
+
 	}
 
 }

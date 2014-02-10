@@ -86,7 +86,6 @@
         android:layout_below="@+id/tableLayout1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp"
-        android:text="@string/mensaje"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#CC2EFA" />
 

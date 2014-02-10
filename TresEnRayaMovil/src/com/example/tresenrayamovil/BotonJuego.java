@@ -24,6 +24,7 @@ public class BotonJuego extends Button {
 	public BotonJuego(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.setTextColor(Color.DKGRAY);
+		this.setEnabled(true);
 	
 	}
 	// returns las coordenadas
